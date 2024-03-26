@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -36,6 +38,58 @@ class UserController extends Controller
         ]);
 
         // Redirection après l'inscription
-        return redirect()->route('/')->with('success', 'Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.');
+        return redirect()->route('calendar')->with('success', 'Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.');
+    }
+
+    public function showFormLogin()
+    {
+        return view('users.login');
+    }
+    public function loginUser(Request $request)
+    {
+        // Valider les données du formulaire de connexion
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        // Tentative d'authentification de l'utilisateur
+        if (Auth::attempt($credentials)) {
+            // Vérifier le profil de l'utilisateur
+            $user = Auth::user();
+            if ($user->profile_type === 'teacher') {
+                // Rediriger vers le tableau de bord administrateur
+                return redirect()->route('calendar');
+            } 
+        } else {
+            // Authentification échouée
+            return back()->withErrors(['email' => 'Les informations de connexion fournies sont incorrectes.'])->withInput();
+        }
+    }
+
+
+    public function showCalendar()
+    {
+        $user = auth()->user(); // Obtenez l'utilisateur actuellement authentifié
+        return view('users.calendar', compact('user'));
+    }
+    public function updateSchedule(Request $request)
+    {
+        $user = auth()->user(); // Obtenez l'utilisateur actuellement authentifié
+        $user->schedule += $request->schedule;
+        $user->save();
+
+        return redirect()->route('calendar')->with('success', 'Schedule updated successfully');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
     }
 }

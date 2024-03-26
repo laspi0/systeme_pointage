@@ -2,6 +2,7 @@
 
 @extends('admin.app')
 @section('content')
+<a href="{{ route('login') }}" class="btn bg-info btn-sm float-right m-2">User</a>
 
 <br>
 <br>
@@ -11,8 +12,8 @@
             <div class="text-center">
                 <img src="/assets/images/logo-icon.png" alt="logo icon">
             </div>
-            <div class="card-title text-uppercase text-center py-3">Connexion</div>
-            <form action="{{ route('login') }}" method="POST">
+            <div class="card-title text-uppercase text-center py-3">Connexion Admin</div>
+            <form action="{{ route('admin.login') }}" method="POST">
                 @csrf
                 <div class="form-group">
                     <label for="exampleInputEmailId" class="sr-only">Adresse e-mail</label>

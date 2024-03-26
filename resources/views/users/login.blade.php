@@ -2,6 +2,8 @@
 
 @extends('admin.app')
 @section('content')
+<a href="{{ route('admin.login') }}" class="btn bg-info btn-sm float-right m-2">Admin</a>
+
 <br>
 <br>
 <div class="card card-authentication1 mx-auto my-4">
@@ -10,18 +12,9 @@
             <div class="text-center">
                 <img src="/assets/images/logo-icon.png" alt="logo icon">
             </div>
-            <div class="card-title text-uppercase text-center py-3">Inscription Admin</div>
-            <form method="POST" action="{{ route('admin.create_user') }}">
+            <div class="card-title text-uppercase text-center py-3">Connexion Prof</div>
+            <form action="{{ route('login') }}" method="POST">
                 @csrf
-                <div class="form-group">
-                    <label for="exampleInputName" class="sr-only">Nom</label>
-                    <div class="position-relative has-icon-right">
-                        <input type="text" id="exampleInputName" class="form-control input-shadow" name="last_name" placeholder="Entrez votre nom">
-                        <div class="form-control-position">
-                            <i class="icon-user"></i>
-                        </div>
-                    </div>
-                </div>
                 <div class="form-group">
                     <label for="exampleInputEmailId" class="sr-only">Adresse e-mail</label>
                     <div class="position-relative has-icon-right">
@@ -41,14 +34,14 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-light btn-block waves-effect waves-light">S'inscrire</button>
+                <button type="submit" class="btn btn-light btn-block waves-effect waves-light">Se connecter</button>
             </form>
-
         </div>
     </div>
     <div class="card-footer text-center py-3">
-        <p class="text-warning mb-0">Vous avez déjà un compte ? <a href="{{ route('admin.login') }}"> Connectez-vous ici</a></p>
+        <p class="text-warning mb-0">Vous n'avez pas encore de compte ? <a href="{{ route('register') }}">Inscrivez-vous ici</a></p>
     </div>
+
 
 </div>
 
